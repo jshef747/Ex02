@@ -1,3 +1,16 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿namespace Ex02;
 
-Console.WriteLine("Hello, World!");
+class Program
+{
+    public static void Main()
+    {
+        string check = Console.ReadLine();
+        bool isValid = InputValidator.IsValidGuessInput(check);
+        string? why = InputValidator.BadInputMessage;
+        Console.WriteLine($"your input: {isValid}\nbad input reason: {why}");
+        check = Console.ReadLine();
+        isValid = InputValidator.IsValidGuessNumber(check);
+        why = InputValidator.BadInputMessage;
+        Console.WriteLine($"your input: {isValid}\nbad input reason: {why}");
+    }
+}
