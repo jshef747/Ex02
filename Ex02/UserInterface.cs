@@ -23,7 +23,8 @@ public class UserInterface
             string guess = promptAndProcessGuess(i);
             //wonOrLost = checkGuess(guess);   // function from logic check
             string feedback = "bla";
-            writeFeedback(i, guess, feedback);    // "bla" will return from logic check
+            addToDataBase(guess, feedback);    // "bla" will return from logic check
+            updateTable(i);
         }
     }
     
@@ -45,8 +46,7 @@ public class UserInterface
     private static void printTable()
     {
         Console.Clear();
-        ////////////
-        //ConsoleUtils.Screen.Clear();
+        ////////////TODO//ConsoleUtils.Screen.Clear();
         Console.WriteLine("Current board status:");
         Console.WriteLine();
         for(int rowNumber = 0; rowNumber <= m_GameDataBase.NumberOfGuesses; rowNumber++)
@@ -149,15 +149,27 @@ public class UserInterface
         return guess;
     }
 
-    private static void writeFeedback(int i_GuessNumber, string i_Guess, string i_Feedback)
+    private static void addToDataBase(string i_Guess, string i_Feedback)
     {   
         m_GameDataBase.AddGuess(i_Guess);
         m_GameDataBase.AddFeedback(i_Feedback);
         
-        // now i need to clear screen and print table. add all guesses from db
-        //printTable
         
-        printOnTableByCell(i_GuessNumber * 2, i_Guess);
-        printOnTableByCell(i_GuessNumber*2 + 1, i_Feedback);
+        //printOnTableByCell(i_GuessNumber * 2, i_Guess);
+        //printOnTableByCell(i_GuessNumber*2 + 1, i_Feedback);
+    }
+
+    private static void updateTable(int i_GuessNumber)
+    {
+        ///////// TODO reminder: use his majesties clear
+        printTable();
+        List<string> guesses = m_GameDataBase.Guesses;
+        List<string> feedback = m_GameDataBase.Feedback;
+        
+        for(int i = 1; i <= i_GuessNumber; i++)
+        {
+            printOnTableByCell(i * 2, guesses[i-1]);
+            printOnTableByCell(i*2 + 1, feedback[i-1]);
+        }
     }
 }
