@@ -9,6 +9,7 @@ public class InputValidator
     private const int k_MinNumberOfGuesses = 4;
     private const int k_MaxNumberOfGuesses = 10;
     public static string? BadInputMessage { private set; get; }
+    public static string InputInstructions = "Please type your next guess <A B C D> or 'Q' to quit";
     
     private static bool checkUniqCharacters(string i_Guess)
     {
