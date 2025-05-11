@@ -89,15 +89,15 @@ public class InputValidator
         return isValid;
     }
 
-    public static bool YesOrNo(string i_charInput)
+    public static bool YesOrNo(string i_CharInput)
     {
         bool isValid = true;
-        if(i_charInput.Length != 1)
+        if(i_CharInput.Length != 1)
         {
             BadInputMessage = "Input must be a single character! Y/N";
             isValid = false;
         }
-        else if(i_charInput[0] != k_Yes || i_charInput[0] != k_No)
+        else if(i_CharInput[0] != k_Yes || i_CharInput[0] != k_No)
         {
             BadInputMessage = "Input must be a valid character! Y/N";
             isValid = false;
@@ -105,10 +105,10 @@ public class InputValidator
         return isValid;
     }
     
-    public static bool quitPressed(string i_charInput)
+    public static bool QuitPressed(string i_CharInput)
     {
         bool isValid = true;
-        if(i_charInput.Length != 1 || i_charInput[0] != k_Quit )
+        if(i_CharInput.Length != 1 || i_CharInput[0] != k_Quit )
         {
             BadInputMessage =
                 "Input must be 4 letters long! Consists of the letters between 'A' and 'H' and each character different then the others, try again or press 'Q' to quit";
