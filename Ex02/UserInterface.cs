@@ -24,7 +24,7 @@ public class UserInterface
             //wonOrLost = checkGuess(guess);   // function from logic check
             string feedback = "bla";
             addToDataBase(guess, feedback);    // "bla" will return from logic check
-            updateTable(i);
+            rePrintTable(i);
         }
     }
     
@@ -153,13 +153,9 @@ public class UserInterface
     {   
         m_GameDataBase.AddGuess(i_Guess);
         m_GameDataBase.AddFeedback(i_Feedback);
-        
-        
-        //printOnTableByCell(i_GuessNumber * 2, i_Guess);
-        //printOnTableByCell(i_GuessNumber*2 + 1, i_Feedback);
     }
 
-    private static void updateTable(int i_GuessNumber)
+    private static void rePrintTable(int i_GuessNumber)
     {
         ///////// TODO reminder: use his majesties clear
         printTable();
