@@ -14,10 +14,9 @@ class Program
         // Console.WriteLine($"your input: {isValid}\nbad input reason: {why}");
         
         RandomGameWord randomGameWord = new RandomGameWord();
-        for(int i = 0; i < 10; i++)
-        {
-            Console.WriteLine(randomGameWord.RandomWord);
-            randomGameWord.GenerateRandomWord();
-        }
+        Console.WriteLine(randomGameWord.RandomWord);
+        string g = Console.ReadLine();
+        string i = GuessValidator.GenerateGuessIndicator(randomGameWord, g);
+        Console.WriteLine(i);
     }
 }

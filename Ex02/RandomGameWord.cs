@@ -2,7 +2,7 @@ namespace Ex02;
 
 public class RandomGameWord
 {
-    private enum eValidCharaters
+    private enum eValidCharacters
     {
         A,
         B,
@@ -31,7 +31,7 @@ public class RandomGameWord
         while(charsForRandomWord.Count < k_RandomWordLength)
         {
             int randomValue = random.Next(0, k_ValidCharactersLength);
-            eValidCharaters character = (eValidCharaters)randomValue;
+            eValidCharacters character = (eValidCharacters)randomValue;
             char charToBeCheckedAndAdded = character.ToString()[0];
             if (!charsForRandomWord.Contains(charToBeCheckedAndAdded))
             {
