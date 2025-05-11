@@ -2,6 +2,10 @@ namespace Ex02;
 
 public class InputValidator
 {
+    
+    private const char k_Yes = 'Y';
+    private const char k_No = 'N';
+    private const char k_Quit = 'Q';
     private const char k_FirstValidChar = 'A';
     private const char k_LastValidChar = 'H';
     private const int k_NumOfLettersPerGuess = 4;
@@ -52,24 +56,23 @@ public class InputValidator
         bool isValid = true;
         if(i_Guess.Length != k_NumOfLettersPerGuess)
         {
-            BadInputMessage = "Input must be 4 letters long!, please try again";
+            BadInputMessage = "Input must be 4 letters long!, please try again or press 'Q' to quit";
             isValid = false;
         }
         else if(!isValidCharacters(i_Guess))
         {
-            BadInputMessage = "Input must be 4 letters long! And consists of the letters between 'A' and 'H', try again";
+            BadInputMessage = "Input must be 4 letters long! And consists of the letters between 'A' and 'H', try again or press 'Q' to quit";
             isValid = false;
         }
 
         else if(!checkUniqCharacters(i_Guess))
         {
-            BadInputMessage = "Input must be 4 letters long! Consists of the letters between 'A' and 'H' and each character different then the others";
+            BadInputMessage = "Input must be 4 letters long! Consists of the letters between 'A' and 'H' and each character different then the others, try again or press 'Q' to quit";
             isValid = false;
         }
         return isValid;
     }
-
-
+    
     public static bool IsValidGuessNumber(string i_Guess)
     {
         bool isValid = int.TryParse(i_Guess, out int guessInt);
@@ -85,10 +88,32 @@ public class InputValidator
         }
         return isValid;
     }
+
+    public static bool YesOrNo(string i_charInput)
+    {
+        bool isValid = true;
+        if(i_charInput.Length != 1)
+        {
+            BadInputMessage = "Input must be a single character! Y/N";
+            isValid = false;
+        }
+        else if(i_charInput[0] != k_Yes || i_charInput[0] != k_No)
+        {
+            BadInputMessage = "Input must be a valid character! Y/N";
+            isValid = false;
+        }
+        return isValid;
+    }
     
-    
-   
-    
-    
-    
+    public static bool quitPressed(string i_charInput)
+    {
+        bool isValid = true;
+        if(i_charInput.Length != 1 || i_charInput[0] != k_Quit )
+        {
+            BadInputMessage =
+                "Input must be 4 letters long! Consists of the letters between 'A' and 'H' and each character different then the others, try again or press 'Q' to quit";
+            isValid = false;
+        }
+        return isValid;
+    }
 }
