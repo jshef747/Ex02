@@ -3,19 +3,30 @@ namespace Ex02;
 public class GuessValidator
 {
     private const char k_HitAndSameIndex = 'V';
-    private const char k_HitAndWrongIndex = 'X';
+    private const char k_HitAndWrongIndex = 'X'; 
+    RandomGameWord m_RandomGameWord;
 
-    public static string GenerateGuessIndicator(RandomGameWord i_RandomGameWord, string i_Guess)
+    public GuessValidator()
+    {
+        m_RandomGameWord = new RandomGameWord();
+    }
+
+    public void Reset()
+    {
+        m_RandomGameWord =  new RandomGameWord();
+    }
+
+    public string GenerateGuessIndicator(string i_Guess)
     {
         int numberOfV = 0;
         int numberOfX = 0;
         foreach(char c in i_Guess)
         {
-            if(i_RandomGameWord.RandomWord.Contains(c) && i_RandomGameWord.RandomWord.IndexOf(c) == i_Guess.IndexOf(c))
+            if(m_RandomGameWord.RandomWord.Contains(c) && m_RandomGameWord.RandomWord.IndexOf(c) == i_Guess.IndexOf(c))
             {
                 numberOfV++;
             }
-            else if(i_RandomGameWord.RandomWord.Contains(c))
+            else if(m_RandomGameWord.RandomWord.Contains(c))
             {
                 numberOfX++;
             }

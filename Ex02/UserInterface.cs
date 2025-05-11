@@ -1,5 +1,4 @@
 namespace Ex02;
-using System;
 
 public class UserInterface
 {
@@ -8,10 +7,13 @@ public class UserInterface
     private const string SEPARATOR = "|============|=======|";
     private const int GUESS_LENGTH = 4;
     private static DataBase m_GameDataBase;
+    private static GuessValidator m_GuessValidator;
     
     public static void StartGame()
     {
         m_GameDataBase = new DataBase();
+        m_GuessValidator = new GuessValidator();
+        
         bool wonOrLost = false;
         
         Console.WriteLine("Welcome to the game!");
@@ -22,7 +24,7 @@ public class UserInterface
         {
             string guess = promptAndProcessGuess(i);
             //wonOrLost = checkGuess(guess);   // function from logic check
-            string feedback = "bla";
+            string feedback = m_GuessValidator.GenerateGuessIndicator(guess);
             addToDataBase(guess, feedback);    // "bla" will return from logic check
             rePrintTable(i);
         }
