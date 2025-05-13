@@ -11,7 +11,7 @@ public class GameLogic
     private GuessHistory m_GuessHistory;
 
     
-    public enum eGameStateIndicator
+    public  enum eGameStateIndicator
     {
         Won,
         Lost,
