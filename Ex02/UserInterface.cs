@@ -11,28 +11,27 @@ public class UserInterface
     private const string k_Row = "|         |       |";
     private const string k_Separator = "|=========|=======|";
     
-    private const int k_GuessLength = 4;
-    private static DataBase m_GameDataBase;
-    private static GuessValidator m_GuessValidator;
+    private static GameLogic m_GameLogic;
     
     public static void StartGame()
     {
-        m_GameDataBase = new DataBase();
-        m_GuessValidator = new GuessValidator();
-        
-        bool wonOrLost = false;
-        
         Console.WriteLine("Welcome to the game!");
         
         getTableSizeAndPrint();
+        
 
-        for(int i = 1; i <= m_GameDataBase.NumberOfGuesses && !wonOrLost; i++)
+        for(int currentGuess = 1; currentGuess <= m_GameLogic.NumberOfGuesses; currentGuess++)
         {
-            string guess = promptAndProcessGuess(i);
-            //wonOrLost = checkGuess(guess);   // function from logic check
-            string feedback = m_GuessValidator.GenerateGuessIndicator(guess);
-            addToDataBase(guess, feedback);    // "bla" will return from logic check
-            rePrintTable(i);
+            string guess = promptAndProcessGuess(currentGuess);
+            
+            string feedback = m_GameLogic.GenerateGuessIndicator(guess, out GameLogic.eGameStateIndicator gameStateIndicator, currentGuess);
+            
+            if(gameStateIndicator == GameLogic.eGameStateIndicator.Won)
+            {}////TODO fill this
+            else if(gameStateIndicator == GameLogic.eGameStateIndicator.Lost)
+            {}////TODO fill this
+            
+            rePrintTable(currentGuess);
         }
     }
     
@@ -45,8 +44,8 @@ public class UserInterface
             Console.WriteLine(InputValidator.BadInputMessage);
             numberOfGuesses = Console.ReadLine();
         }
-        
-        m_GameDataBase.NumberOfGuesses = int.Parse(numberOfGuesses);
+
+        m_GameLogic = new GameLogic(int.Parse(numberOfGuesses));
         
         printTable();
     }
@@ -57,7 +56,7 @@ public class UserInterface
         ////////////TODO//ConsoleUtils.Screen.Clear();
         Console.WriteLine("Current board status:");
         Console.WriteLine();
-        for(int rowNumber = 0; rowNumber <= m_GameDataBase.NumberOfGuesses; rowNumber++)
+        for(int rowNumber = 0; rowNumber <= m_GameLogic.NumberOfGuesses; rowNumber++)
         {
             Console.WriteLine(k_Row);
             Console.WriteLine(k_Separator);
@@ -104,7 +103,7 @@ public class UserInterface
                     for(int i = 0; i < length; i++)
                     {
                         newStringToPrint += i_StringToPrint[i];
-                        if(i != k_GuessLength - 1)
+                        if(i != GameLogic.GuessLength - 1)
                         {
                             newStringToPrint += " ";
                         }
@@ -165,7 +164,7 @@ public class UserInterface
     {
         string guess = "";
         
-        for (int i = 0; i < k_GuessLength; i++)
+        for (int i = 0; i < GameLogic.GuessLength; i++)
         {
             ConsoleKeyInfo key = Console.ReadKey(true);
             
@@ -174,7 +173,7 @@ public class UserInterface
             // if entered enter, fill guess with spaces
             if (key.Key == ConsoleKey.Enter)
             {
-                while(i < k_GuessLength)
+                while(i < GameLogic.GuessLength)
                 {
                     guess += ' ';
                     i++;
@@ -189,18 +188,13 @@ public class UserInterface
         return guess;
     }
 
-    private static void addToDataBase(string i_Guess, string i_Feedback)
-    {   
-        m_GameDataBase.AddGuess(i_Guess);
-        m_GameDataBase.AddFeedback(i_Feedback);
-    }
-
     private static void rePrintTable(int i_GuessNumber)
     {
         ///////// TODO reminder: use his majesties clear
         printTable();
-        List<string> guesses = m_GameDataBase.Guesses;
-        List<string> feedback = m_GameDataBase.Feedback;
+        
+        List<string> guesses = m_GameLogic.getGuessFromHistory();
+        List<string> feedback = m_GameLogic.getFeedbackHistory();
         
         for(int i = 1; i <= i_GuessNumber; i++)
         {

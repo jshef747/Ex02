@@ -4,13 +4,13 @@ public class GameLogic
 {
     private const char k_HitAndSameIndex = 'V';
     private const char k_HitAndWrongIndex = 'X'; 
-    private int NumberOfGuess { set; get; }
+    public int NumberOfGuesses { set; get; }
 
-    private const int GuessLength = 4;
+    public const int GuessLength = 4;
     private RandomGameWord m_RandomGameWord;
     private GuessHistory m_GuessHistory;
-    
 
+    
     public enum eGameStateIndicator
     {
         Won,
@@ -66,7 +66,7 @@ public class GameLogic
     {
         m_RandomGameWord = new RandomGameWord();
         m_GuessHistory = new GuessHistory();
-        NumberOfGuess = numberOfGuess;
+        NumberOfGuesses = numberOfGuess;
     }
 
     public void Reset()
@@ -74,7 +74,7 @@ public class GameLogic
         m_RandomGameWord.GenerateRandomWord();
     }
 
-    public string GenerateGuessIndicator(string i_Guess, ref eGameStateIndicator IoGameStateIndicator, int i_currentGuessNumber)
+    public string GenerateGuessIndicator(string i_Guess, out eGameStateIndicator IoGameStateIndicator, int i_currentGuessNumber)
     {
         int numberOfV = 0;
         int numberOfX = 0;
@@ -104,7 +104,7 @@ public class GameLogic
         {
             IoGameStateIndicator = eGameStateIndicator.Won;
         }
-        else if(i_currentGuessNumber < NumberOfGuess)
+        else if(i_currentGuessNumber < NumberOfGuesses)
         {
             IoGameStateIndicator = eGameStateIndicator.Continue;
         }
