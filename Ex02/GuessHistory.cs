@@ -1,12 +1,12 @@
 namespace Ex02;
 
-public class DataBase
+public class GuessHistory
 {
     private int m_NumberOfGuesses;
     private List<string> m_Guesses;
     private List<string> m_Feedback;
 
-    public DataBase()
+    public GuessHistory()
     {
         m_NumberOfGuesses = 0;
         m_Guesses = new List<string>();
@@ -24,9 +24,9 @@ public class DataBase
         get { return m_Guesses; }
     }
     
-    public void AddGuess(string guess)
+    public void AddGuess(string i_Guess)
     {
-        m_Guesses.Add(guess);
+        m_Guesses.Add(i_Guess);
     }
     
     public List<string> Feedback
@@ -34,8 +34,8 @@ public class DataBase
         get { return m_Feedback; }
     }
     
-    public void AddFeedback(string feedaback)
+    public void AddFeedback(string i_Feedaback)
     {
-        m_Feedback.Add(feedaback);
+        m_Feedback.Add(i_Feedaback);
     }
 }
