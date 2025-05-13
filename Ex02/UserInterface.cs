@@ -1,17 +1,25 @@
 namespace Ex02;
-using System;
 
 public class UserInterface
 {
-    private const int EXTRA_LINES = 2;
-    private const string ROW = "|            |       |";
-    private const string SEPARATOR = "|============|=======|";
-    private const int GUESS_LENGTH = 4;
+    private const int k_ExtraLinesForSetCursor = 2;
+    private const int k_LeftCellStartIndex = 1;
+    private const int k_RightCellStartIndex = 11;
+    private const int k_PinsCellNumber = 0;
+    private const int k_ResultCellNumber = 1;
+    private const int k_UserFirstAnswerCellNumber = 2;
+    private const string k_Row = "|         |       |";
+    private const string k_Separator = "|=========|=======|";
+    
+    private const int k_GuessLength = 4;
     private static DataBase m_GameDataBase;
+    private static GuessValidator m_GuessValidator;
     
     public static void StartGame()
     {
         m_GameDataBase = new DataBase();
+        m_GuessValidator = new GuessValidator();
+        
         bool wonOrLost = false;
         
         Console.WriteLine("Welcome to the game!");
@@ -22,7 +30,7 @@ public class UserInterface
         {
             string guess = promptAndProcessGuess(i);
             //wonOrLost = checkGuess(guess);   // function from logic check
-            string feedback = "bla";
+            string feedback = m_GuessValidator.GenerateGuessIndicator(guess);
             addToDataBase(guess, feedback);    // "bla" will return from logic check
             rePrintTable(i);
         }
@@ -51,36 +59,65 @@ public class UserInterface
         Console.WriteLine();
         for(int rowNumber = 0; rowNumber <= m_GameDataBase.NumberOfGuesses; rowNumber++)
         {
-            Console.WriteLine(ROW);
-            Console.WriteLine(SEPARATOR);
+            Console.WriteLine(k_Row);
+            Console.WriteLine(k_Separator);
         }
         Console.WriteLine();
         
-        printOnTableByCell(0, "Pins:");
-        printOnTableByCell(1, "Result:");
+        printOnTableByCell(k_PinsCellNumber, "Pins:");
+        printOnTableByCell(k_ResultCellNumber, "Result:");
+        printOnTableByCell(k_UserFirstAnswerCellNumber, "####");
     }
 
     private static void printOnTableByCell(int i_CellNumber, string i_StringToPrint)
     {
         int oldLeft = Console.CursorLeft;
         int oldTop = Console.CursorTop;
-        int newLeft = 0;
+        int newLeft = k_LeftCellStartIndex;
         int newTop = 0;
+        string strToPrint = i_StringToPrint;
 
         if(i_CellNumber % 2 == 0)
         {
-            newLeft = 1;
-            newTop = EXTRA_LINES + i_CellNumber;
+            newTop = k_ExtraLinesForSetCursor + i_CellNumber;
+            if(i_CellNumber != k_PinsCellNumber)
+            {
+                strToPrint = string.Format(
+                    " {0} {1} {2} {3} ",
+                    i_StringToPrint[0],
+                    i_StringToPrint[1],
+                    i_StringToPrint[2],
+                    i_StringToPrint[3]);
+            }
         }
         else
         {
-            newLeft = 14;
-            newTop = EXTRA_LINES + (i_CellNumber - 1);
+            newLeft = k_RightCellStartIndex;
+            newTop = k_ExtraLinesForSetCursor + (i_CellNumber - 1);
+            if(i_CellNumber != k_ResultCellNumber)
+            {
+                int length = i_StringToPrint.Length;
+                if(length > 0)
+                {
+                    string newStringToPrint = "";
+
+                    for(int i = 0; i < length; i++)
+                    {
+                        newStringToPrint += i_StringToPrint[i];
+                        if(i != k_GuessLength - 1)
+                        {
+                            newStringToPrint += " ";
+                        }
+                    }
+
+                    strToPrint = newStringToPrint;
+                }
+            }
         }
         
         
         Console.SetCursorPosition(newLeft, newTop);
-        Console.Write(i_StringToPrint);
+        Console.Write(strToPrint);
         Console.SetCursorPosition(oldLeft, oldTop);
     }
 
@@ -101,7 +138,7 @@ public class UserInterface
             Console.WriteLine(InputValidator.BadInputMessage);
             
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write(guess);
+            Console.Write("{0} {1} {2} {3}", guess[0], guess[1], guess[2], guess[3]);
             Console.ResetColor();
             
             int newTop = Console.CursorTop;
@@ -128,21 +165,24 @@ public class UserInterface
     {
         string guess = "";
         
-        for (int i = 0; i < GUESS_LENGTH; i++)
+        for (int i = 0; i < k_GuessLength; i++)
         {
             ConsoleKeyInfo key = Console.ReadKey(true);
             
-            Console.Write(key.KeyChar); // show it on screen as they type
-            guess += key.KeyChar;
+            Console.Write(key.KeyChar + " "); // show it on screen as they type
             
             // if entered enter, fill guess with spaces
             if (key.Key == ConsoleKey.Enter)
             {
-                while(i < GUESS_LENGTH)
+                while(i < k_GuessLength)
                 {
                     guess += ' ';
                     i++;
                 }
+            }
+            else
+            {
+                guess += key.KeyChar;
             }
         }
         

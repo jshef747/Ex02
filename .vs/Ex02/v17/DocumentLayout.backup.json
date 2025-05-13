@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Mac\\Home\\Documents\\School\\C#\\EX2\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{7511189A-A585-4389-9F0B-B558E4285A41}|Ex02\\Ex02.csproj|c:\\mac\\home\\documents\\school\\c#\\ex2\\ex02\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7511189A-A585-4389-9F0B-B558E4285A41}|Ex02\\Ex02.csproj|solutionrelative:ex02\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{7511189A-A585-4389-9F0B-B558E4285A41}|Ex02\\Ex02.csproj|c:\\mac\\home\\documents\\school\\c#\\ex2\\ex02\\userinterface.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7511189A-A585-4389-9F0B-B558E4285A41}|Ex02\\Ex02.csproj|solutionrelative:ex02\\userinterface.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -14,24 +18,40 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Mac\\Home\\Documents\\School\\C#\\EX2\\Ex02\\Program.cs",
+              "RelativeDocumentMoniker": "Ex02\\Program.cs",
+              "ToolTip": "C:\\Mac\\Home\\Documents\\School\\C#\\EX2\\Ex02\\Program.cs",
+              "RelativeToolTip": "Ex02\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-11T16:06:28.72Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "UserInterface.cs",
               "DocumentMoniker": "C:\\Mac\\Home\\Documents\\School\\C#\\EX2\\Ex02\\UserInterface.cs",
               "RelativeDocumentMoniker": "Ex02\\UserInterface.cs",
               "ToolTip": "C:\\Mac\\Home\\Documents\\School\\C#\\EX2\\Ex02\\UserInterface.cs",
               "RelativeToolTip": "Ex02\\UserInterface.cs",
-              "ViewState": "AgIAACoAAAAAAAAAAAAYwDEAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-11T13:41:51.434Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-11T13:41:51.434Z"
             }
           ]
         },
