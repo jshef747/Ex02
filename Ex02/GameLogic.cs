@@ -4,11 +4,9 @@ public class GameLogic
 {
     private const char k_HitAndSameIndex = 'V';
     private const char k_HitAndWrongIndex = 'X'; 
-    public int NumberOfGuesses { set; get; }
-
-    private RandomGameWord m_RandomGameWord;
-    private GuessHistory m_GuessHistory;
-
+    private readonly RandomGameWord r_MRandomGameWord;
+    private readonly GuessHistory r_MGuessHistory;
+    public int NumberOfGuesses { get; set; }
     
     public  enum eGameStateIndicator
     {
@@ -17,111 +15,126 @@ public class GameLogic
         Continue
     }
 
-
     private class RandomGameWord
     {
-        private enum eValidCharacters
-        {
-            A,
-            B,
-            C,
-            D,
-            E,
-            F,
-            G,
-            H
-        }
-
         public string? RandomWord { private set; get; }
+        private readonly Random r_MRandom;
 
         public RandomGameWord()
         {
-            GenerateRandomWord();
+            r_MRandom = new Random();
+            generateRandomWord();
         }
 
-        public void GenerateRandomWord()
+        public void Reset()
         {
-            Random random = new Random();
-            List<char> charsForRandomWord = new List<char>();
-            while (charsForRandomWord.Count < GameUtils.k_NumberOfLettersPerGuess)
+            generateRandomWord();
+        }
+
+        private void generateRandomWord()
+        {
+            string randomWordToBuild = "";
+            
+            while (randomWordToBuild.Length < GameUtils.k_NumberOfLettersPerGuess)
             {
-                int randomValue = random.Next(0, GameUtils.k_NumberOfValidCharacters);
-                eValidCharacters character = (eValidCharacters)randomValue;
-                char charToBeCheckedAndAdded = character.ToString()[0];
-                if (!charsForRandomWord.Contains(charToBeCheckedAndAdded))
+                char randomChar = (char)(GameUtils.k_FirstValidChar + r_MRandom.Next(GameUtils.k_NumberOfValidCharacters));
+                
+                if (!randomWordToBuild.Contains(randomChar))
                 {
-                    charsForRandomWord.Add(charToBeCheckedAndAdded);
+                    randomWordToBuild += randomChar;
                 }
             }
-            RandomWord = new string(charsForRandomWord.ToArray());
+
+            RandomWord = randomWordToBuild;
         }
     }
 
 
-    public GameLogic(int numberOfGuess)
+    public GameLogic(int i_NumberOfGuess)
     {
-        m_RandomGameWord = new RandomGameWord();
-        m_GuessHistory = new GuessHistory();
-        NumberOfGuesses = numberOfGuess;
+        r_MRandomGameWord = new RandomGameWord();
+        r_MGuessHistory = new GuessHistory();
+        NumberOfGuesses = i_NumberOfGuess;
     }
 
-    public void Reset()
+    private void reset()
     {
-        m_RandomGameWord.GenerateRandomWord();
+        r_MRandomGameWord.Reset();
+        r_MGuessHistory.Reset();
     }
 
-    public string GenerateGuessIndicator(string i_Guess, out eGameStateIndicator IoGameStateIndicator, int i_currentGuessNumber)
+    public bool PlayAgainOrNot(string i_PlayAgain)
+    {
+        bool willPlayAgain = false;
+        
+        if(i_PlayAgain == GameUtils.k_Yes)
+        {
+            reset();
+            willPlayAgain = true;
+        }
+
+        return willPlayAgain;
+    }
+
+    public eGameStateIndicator GenerateGuessFeedback(string i_Guess, int i_CurrentGuessNumber)
     {
         int numberOfV = 0;
         int numberOfX = 0;
+        string guessFeedback = "";
+        eGameStateIndicator gameStateIndicator;
+        
         foreach(char c in i_Guess)
         {
-            if(m_RandomGameWord.RandomWord.Contains(c) && m_RandomGameWord.RandomWord.IndexOf(c) == i_Guess.IndexOf(c))
+            if(r_MRandomGameWord.RandomWord != null)
             {
-                numberOfV++;
-            }
-            else if(m_RandomGameWord.RandomWord.Contains(c))
-            {
-                numberOfX++;
+                if(r_MRandomGameWord.RandomWord.Contains(c) 
+                   && r_MRandomGameWord.RandomWord.IndexOf(c) == i_Guess.IndexOf(c))
+                {
+                    numberOfV++;
+                }
+                else if(r_MRandomGameWord.RandomWord.Contains(c))
+                {
+                    numberOfX++;
+                }
             }
         }
-        List<char> charsForGuessIndicator = new List<char>();
+        
         for(int i = 0; i < numberOfV; i++)
         {
-            charsForGuessIndicator.Add(k_HitAndSameIndex);
+            guessFeedback += k_HitAndSameIndex;
         }
 
         for(int i = 0; i < numberOfX; i++)
         {
-            charsForGuessIndicator.Add(k_HitAndWrongIndex);
+            guessFeedback += k_HitAndWrongIndex;
         }
-        string guessIndicator = new string(charsForGuessIndicator.ToArray());
+        
         if(numberOfV == GameUtils.k_NumberOfLettersPerGuess)
         {
-            IoGameStateIndicator = eGameStateIndicator.Won;
+            gameStateIndicator = eGameStateIndicator.Won;
         }
-        else if(i_currentGuessNumber < NumberOfGuesses)
+        else if(i_CurrentGuessNumber < NumberOfGuesses)
         {
-            IoGameStateIndicator = eGameStateIndicator.Continue;
+            gameStateIndicator = eGameStateIndicator.Continue;
         }
         else
         {
-            IoGameStateIndicator = eGameStateIndicator.Lost;
+            gameStateIndicator = eGameStateIndicator.Lost;
         }
-        m_GuessHistory.AddGuess(i_Guess);
-        m_GuessHistory.AddFeedback(guessIndicator);
-        return guessIndicator;
+        
+        r_MGuessHistory.AddGuess(i_Guess);
+        r_MGuessHistory.AddFeedback(guessFeedback);
+
+        return gameStateIndicator;
     }
 
-    public List<string> getGuessFromHistory()
+    public List<string> GetGuessFromHistory()
     {
-        return m_GuessHistory.Guesses;
+        return r_MGuessHistory.Guesses;
     }
 
-    public List<string> getFeedbackHistory()
+    public List<string> GetFeedbackHistory()
     {
-        return m_GuessHistory.Feedback;
+        return r_MGuessHistory.Feedback;
     }
-
 }
-
