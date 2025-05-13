@@ -18,7 +18,6 @@ public class UserInterface
         Console.WriteLine("Welcome to the game!");
         
         getTableSizeAndPrint();
-        
 
         for(int currentGuess = 1; currentGuess <= m_GameLogic.NumberOfGuesses; currentGuess++)
         {
@@ -103,7 +102,7 @@ public class UserInterface
                     for(int i = 0; i < length; i++)
                     {
                         newStringToPrint += i_StringToPrint[i];
-                        if(i != GameLogic.GuessLength - 1)
+                        if(i != GameUtils.k_NumberOfLettersPerGuess - 1)
                         {
                             newStringToPrint += " ";
                         }
@@ -164,7 +163,7 @@ public class UserInterface
     {
         string guess = "";
         
-        for (int i = 0; i < GameLogic.GuessLength; i++)
+        for (int i = 0; i < GameUtils.k_NumberOfLettersPerGuess; i++)
         {
             ConsoleKeyInfo key = Console.ReadKey(true);
             
@@ -173,7 +172,7 @@ public class UserInterface
             // if entered enter, fill guess with spaces
             if (key.Key == ConsoleKey.Enter)
             {
-                while(i < GameLogic.GuessLength)
+                while(i < GameUtils.k_NumberOfLettersPerGuess)
                 {
                     guess += ' ';
                     i++;

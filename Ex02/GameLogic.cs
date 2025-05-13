@@ -6,7 +6,6 @@ public class GameLogic
     private const char k_HitAndWrongIndex = 'X'; 
     public int NumberOfGuesses { set; get; }
 
-    public const int GuessLength = 4;
     private RandomGameWord m_RandomGameWord;
     private GuessHistory m_GuessHistory;
 
@@ -33,9 +32,6 @@ public class GameLogic
             H
         }
 
-        private const int k_ValidCharactersLength = 8;
-        private const int k_RandomWordLength = 4;
-
         public string? RandomWord { private set; get; }
 
         public RandomGameWord()
@@ -47,9 +43,9 @@ public class GameLogic
         {
             Random random = new Random();
             List<char> charsForRandomWord = new List<char>();
-            while (charsForRandomWord.Count < k_RandomWordLength)
+            while (charsForRandomWord.Count < GameUtils.k_NumberOfLettersPerGuess)
             {
-                int randomValue = random.Next(0, k_ValidCharactersLength);
+                int randomValue = random.Next(0, GameUtils.k_NumberOfValidCharacters);
                 eValidCharacters character = (eValidCharacters)randomValue;
                 char charToBeCheckedAndAdded = character.ToString()[0];
                 if (!charsForRandomWord.Contains(charToBeCheckedAndAdded))
@@ -100,7 +96,7 @@ public class GameLogic
             charsForGuessIndicator.Add(k_HitAndWrongIndex);
         }
         string guessIndicator = new string(charsForGuessIndicator.ToArray());
-        if(numberOfV == GuessLength)
+        if(numberOfV == GameUtils.k_NumberOfLettersPerGuess)
         {
             IoGameStateIndicator = eGameStateIndicator.Won;
         }
