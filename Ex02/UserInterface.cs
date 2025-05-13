@@ -1,3 +1,4 @@
+
 namespace Ex02;
 
 public static class UserInterface
@@ -42,15 +43,14 @@ public static class UserInterface
             }
         }
         
-        //TODO change to his clear!!
-        Console.Clear();
-        Console.WriteLine("Goodbye!");
+        ConsoleUtils.Screen.Clear();
+        quitGame();
     }
     
     private static string readNonNullStringAndHandleQuit()
     {
         string? input = Console.ReadLine();
-        while (input is null)
+        while (input == null)
         {
             Console.WriteLine("Input cannot be null.");
             input = Console.ReadLine();
@@ -94,8 +94,7 @@ public static class UserInterface
     
     private static void getTableSizeAndPrint()
     {
-        //TODO CHANGE TO HIS MAJESTIES!
-        Console.Clear();
+        ConsoleUtils.Screen.Clear();
         Console.WriteLine(GameUtils.k_NumberOfGuessesInstructions);
         string numberOfGuesses = readNonNullStringAndHandleQuit();
         
@@ -123,8 +122,7 @@ public static class UserInterface
         List<string> feedbacks = s_MGameLogic.GetFeedbackHistory();
         int currentGuessToPrintIndex = 0;
         
-        Console.Clear();
-        ////////////TODO//ConsoleUtils.Screen.Clear();
+        ConsoleUtils.Screen.Clear();
         Console.WriteLine("Current board status:");
         Console.WriteLine();
         
@@ -268,11 +266,9 @@ public static class UserInterface
 
     private static void quitGame()
     {
-        //TODO - Jonathan what do you think about the exit?
-        //TODO - change to his majesties clear
-        Console.Clear();
+        ConsoleUtils.Screen.Clear();
         Console.WriteLine("Goodbye.");
-        Environment.Exit(0);
+        Environment.Exit(0); // i dont know if allowd i think not
     }
     
 }
