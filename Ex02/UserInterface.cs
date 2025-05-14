@@ -5,22 +5,29 @@ public static class UserInterface
     private const int k_LengthOfFeedbackCell = 7;
     private const string k_Row = "|         |       |";
     private const string k_Separator = "|=========|=======|";
-    
     private static GameLogic? s_MGameLogic;
-    
+    private static bool m_Quit = false;
     public static void StartGame()
     {
         Console.WriteLine("Welcome to the game!");
 
         bool play = true;
 
-        while(play)
+        while(play && !m_Quit)
         {
             getTableSizeAndPrint();
+            if(m_Quit)
+            {
+                break;
+            }
 
             for(int currentGuess = 1; currentGuess <= s_MGameLogic!.NumberOfGuesses; currentGuess++)
             {
                 string guess = promptAndProcessGuess();
+                if(m_Quit)
+                {
+                    break;
+                }
             
                 GameLogic.eGameStateIndicator gameStateIndicator = s_MGameLogic.GenerateGuessFeedback(guess, currentGuess);
                 
@@ -59,7 +66,7 @@ public static class UserInterface
         
         if(input.ToUpper() == GameUtils.k_Quit.ToString())
         {
-            quitGame();
+            m_Quit = true;
         }
         
         return input;
@@ -73,7 +80,7 @@ public static class UserInterface
             
         if(Char.ToUpper(key.KeyChar) == GameUtils.k_Quit)
         {
-            quitGame();
+            m_Quit = true;
         }
         
         return key;
@@ -83,13 +90,18 @@ public static class UserInterface
     {
         Console.WriteLine($"Would you like to start a new game? ({GameUtils.k_Yes}/{GameUtils.k_No})");
         ConsoleKeyInfo playAgain = readCharAndHandleQuit();
+        bool returnValue;
 
-        while(!InputValidator.YesOrNo(playAgain.KeyChar.ToString()))
+        while(!InputValidator.YesOrNo(playAgain.KeyChar.ToString()) && !m_Quit)
         {
             playAgain = readCharAndHandleQuit();
         }
 
-        return s_MGameLogic!.PlayAgainOrNot(playAgain.KeyChar.ToString());
+        returnValue = m_Quit
+                          ? s_MGameLogic!.PlayAgainOrNot(GameUtils.k_No)
+                          : s_MGameLogic!.PlayAgainOrNot(playAgain.KeyChar.ToString());
+
+        return returnValue;
     }
     
     private static void getTableSizeAndPrint()
@@ -99,10 +111,15 @@ public static class UserInterface
         Console.WriteLine(GameUtils.k_NumberOfGuessesInstructions);
         string numberOfGuesses = readNonNullStringAndHandleQuit();
         
-        while(!InputValidator.IsValidGuessNumber(numberOfGuesses))
-        {
-            Console.WriteLine(InputValidator.BadInputMessage);
+        while(!InputValidator.IsValidGuessNumber(numberOfGuesses) && !m_Quit) 
+        { 
+            Console.WriteLine(InputValidator.BadInputMessage); 
             numberOfGuesses = readNonNullStringAndHandleQuit();
+        }
+
+        if(m_Quit)
+        {
+            return;
         }
 
         if(s_MGameLogic == null)
@@ -209,7 +226,7 @@ public static class UserInterface
         
         string guess = getGuessInput();
         
-        while(!InputValidator.IsValidGuessInput(guess))
+        while(!InputValidator.IsValidGuessInput(guess) && !m_Quit)
         {
             clearGuessFromScreen(oldLeft, oldTop);
             
@@ -246,6 +263,11 @@ public static class UserInterface
         for (int i = 0; i < GameUtils.k_NumberOfLettersPerGuess; i++)
         {
             ConsoleKeyInfo key = readCharAndHandleQuit();
+            if(m_Quit)
+            {
+                break;
+            }
+            
             Console.Write(" ");
             
             // if hit enter, fill guess with spaces
@@ -265,14 +287,4 @@ public static class UserInterface
         
         return guess;
     }
-
-    private static void quitGame()
-    {
-        //TODO - Jonathan what do you think about the exit?
-        //TODO - change to his majesties clear
-        Console.Clear();
-        Console.WriteLine("Goodbye.");
-        Environment.Exit(0);
-    }
-    
 }
