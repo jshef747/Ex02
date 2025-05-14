@@ -6,103 +6,103 @@ public static class InputValidator
     
     private static bool checkUniqueCharacters(string i_Guess)
     {
-        bool[] uniqueFlagger = new bool[GameUtils.k_NumberOfValidCharacters];
-        int countOfUniqChars = 0;
+        bool[] uniqueLetterInGuessFlagArray = new bool[GameUtils.k_NumberOfValidCharacters];
+        int countOfUniqueLetters = 0;
         
         foreach(char c in i_Guess)
         {
-            uniqueFlagger[c - GameUtils.k_FirstValidChar] = true;
+            uniqueLetterInGuessFlagArray[c - GameUtils.k_FirstValidChar] = true;
         }
 
-        foreach(bool flag in uniqueFlagger)
+        foreach(bool uniqueLetterInGuess in uniqueLetterInGuessFlagArray)
         {
-            if(flag)
+            if(uniqueLetterInGuess)
             {
-                countOfUniqChars++;
+                countOfUniqueLetters++;
             }
         }
 
-        return countOfUniqChars == 4;
+        return countOfUniqueLetters == 4;
     }
 
     private static bool isValidCharacters(string i_Guess)
     {
-        bool validGuessChars = true;
+        bool validGuessLetters = true;
         
         foreach(char c in i_Guess)
         {
             if(c < GameUtils.k_FirstValidChar || c > GameUtils.k_LastValidChar)
             {
-                validGuessChars = false;
+                validGuessLetters = false;
             }
         }
         
-        return validGuessChars;
+        return validGuessLetters;
     }
     
     public static bool IsValidGuessInput(string i_Guess)
     {
-        bool isValid = true;
+        bool isValidGuess = true;
         
         if(i_Guess.Length != GameUtils.k_NumberOfLettersPerGuess)
         {
             BadInputMessage = $"Input must be {GameUtils.k_NumberOfLettersPerGuess} letters long!"
                               + $" Please try again or press '{GameUtils.k_Quit}' to quit.";
-            isValid = false;
+            isValidGuess = false;
         }
         else if(!isValidCharacters(i_Guess))
         {
             BadInputMessage = $"Input must consist the letters between '{GameUtils.k_FirstValidChar}'"
                               + $" and '{GameUtils.k_LastValidChar}' only!"
                               + $" Please try again or press '{GameUtils.k_Quit}' to quit.";
-            isValid = false;
+            isValidGuess = false;
         }
         else if(!checkUniqueCharacters(i_Guess))
         {
             BadInputMessage = $"Each character must be different than the others!"
                               + $" Please try again or press '{GameUtils.k_Quit}' to quit.";
-            isValid = false;
+            isValidGuess = false;
         }
         
-        return isValid;
+        return isValidGuess;
     }
     
     public static bool IsValidGuessNumber(string i_Guess)
     {
-        bool isValid = int.TryParse(i_Guess, out int guessInt);
+        bool isValidGuessNumber = int.TryParse(i_Guess, out int guessInt);
         
-        if(!isValid)
+        if(!isValidGuessNumber)
         {
             BadInputMessage = $"The number of guesses must be an integer! "
                               + $"Please try again or press '{GameUtils.k_Quit}' to quit.";
-            isValid = false;
+            isValidGuessNumber = false;
         }
         else if(guessInt < GameUtils.k_MinimumNumberOfGuesses || guessInt > GameUtils.k_MaximumNumberOfGuesses)
         {
             BadInputMessage = $"The number of guesses must be between {GameUtils.k_MinimumNumberOfGuesses}"
                               + $" and {GameUtils.k_MaximumNumberOfGuesses}! "
                               + $"Please try again or press '{GameUtils.k_Quit}' to quit.";
-            isValid = false;
+            isValidGuessNumber = false;
         }
         
-        return isValid;
+        return isValidGuessNumber;
     }
 
-    public static bool YesOrNo(string i_CharInput)
+    public static bool YesOrNo(string i_YesOrNoInput)
     {
-        bool isValid = true;
+        bool isValidAnswer = true;
         
-        if(i_CharInput.Length != 1)
+        if(i_YesOrNoInput.Length != 1)
         {
             BadInputMessage = $"Input must be a single character! ({GameUtils.k_Yes}/{GameUtils.k_No})";
-            isValid = false;
+            isValidAnswer = false;
         }
-        else if(i_CharInput[0].ToString() != GameUtils.k_Yes && i_CharInput[0].ToString() != GameUtils.k_No)
+        else if(i_YesOrNoInput[0].ToString() != GameUtils.k_Yes && i_YesOrNoInput[0].ToString() != GameUtils.k_No)
         {
             BadInputMessage = $"Input must be a valid character! ({GameUtils.k_Yes}/{GameUtils.k_No})";
-            isValid = false;
+            isValidAnswer = false;
         }
         
-        return isValid;
+        return isValidAnswer;
     }
 }

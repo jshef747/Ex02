@@ -4,7 +4,7 @@ public class GameLogic
 {
     private const char k_HitAndSameIndex = 'V';
     private const char k_HitAndWrongIndex = 'X'; 
-    private readonly RandomGameWord r_MRandomGameWord;
+    private readonly RandomGameWord r_RandomGameWord;
     private readonly GuessHistory r_MGuessHistory;
     public int NumberOfGuesses { get; set; }
     
@@ -18,11 +18,11 @@ public class GameLogic
     private class RandomGameWord
     {
         public string? RandomWord { private set; get; }
-        private readonly Random r_MRandom;
+        private readonly Random r_Random;
 
         public RandomGameWord()
         {
-            r_MRandom = new Random();
+            r_Random = new Random();
             generateRandomWord();
         }
 
@@ -37,11 +37,11 @@ public class GameLogic
             
             while (randomWordToBuild.Length < GameUtils.k_NumberOfLettersPerGuess)
             {
-                char randomChar = (char)(GameUtils.k_FirstValidChar + r_MRandom.Next(GameUtils.k_NumberOfValidCharacters));
+                char randomLetter = (char)(GameUtils.k_FirstValidChar + r_Random.Next(GameUtils.k_NumberOfValidCharacters));
                 
-                if (!randomWordToBuild.Contains(randomChar))
+                if (!randomWordToBuild.Contains(randomLetter))
                 {
-                    randomWordToBuild += randomChar;
+                    randomWordToBuild += randomLetter;
                 }
             }
 
@@ -52,14 +52,14 @@ public class GameLogic
 
     public GameLogic(int i_NumberOfGuess)
     {
-        r_MRandomGameWord = new RandomGameWord();
+        r_RandomGameWord = new RandomGameWord();
         r_MGuessHistory = new GuessHistory();
         NumberOfGuesses = i_NumberOfGuess;
     }
 
     private void reset()
     {
-        r_MRandomGameWord.Reset();
+        r_RandomGameWord.Reset();
         r_MGuessHistory.Reset();
     }
 
@@ -85,14 +85,14 @@ public class GameLogic
         
         foreach(char c in i_Guess)
         {
-            if(r_MRandomGameWord.RandomWord != null)
+            if(r_RandomGameWord.RandomWord != null)
             {
-                if(r_MRandomGameWord.RandomWord.Contains(c) 
-                   && r_MRandomGameWord.RandomWord.IndexOf(c) == i_Guess.IndexOf(c))
+                if(r_RandomGameWord.RandomWord.Contains(c) 
+                   && r_RandomGameWord.RandomWord.IndexOf(c) == i_Guess.IndexOf(c))
                 {
                     numberOfV++;
                 }
-                else if(r_MRandomGameWord.RandomWord.Contains(c))
+                else if(r_RandomGameWord.RandomWord.Contains(c))
                 {
                     numberOfX++;
                 }
